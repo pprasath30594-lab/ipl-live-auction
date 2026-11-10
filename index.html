@@ -84,5 +84,26 @@ function saveTeams() {
 
     <p>Each team gets ₹100 Crore to build their squad.</p>
 </div>
+<div class="card">
+    <h2>🔨 AUCTION RESULT</h2>
+
+    <button onclick="sold()">SOLD ✅</button>
+
+    <button onclick="unsold()">UNSOLD ❌</button>
+
+    <h3 id="result">Waiting for result...</h3>
+</div>
+
+<script>
+function sold() {
+    document.getElementById("result").innerText =
+        "SOLD for ₹" + bid + " Crore!";
+}
+
+function unsold() {
+    document.getElementById("result").innerText =
+        "UNSOLD!";
+}
+</script>
 </body>
 </html>
