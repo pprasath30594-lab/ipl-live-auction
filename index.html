@@ -49,6 +49,32 @@
             alert("Welcome to IPL Auction!");
         }
     </script>
+<div class="card">
+    <h2>Choose Your Team</h2>
 
+    <input id="team1" placeholder="Player 1 Team Name">
+
+    <br><br>
+
+    <input id="team2" placeholder="Player 2 Team Name">
+
+    <br><br>
+
+    <button onclick="saveTeams()">Continue</button>
+</div>
+
+<script>
+function saveTeams() {
+    let t1 = document.getElementById("team1").value;
+    let t2 = document.getElementById("team2").value;
+
+    if (!t1 || !t2) {
+        alert("Enter both team names!");
+        return;
+    }
+
+    alert(t1 + " VS " + t2);
+}
+</script>
 </body>
 </html>
