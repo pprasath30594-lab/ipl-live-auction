@@ -1,275 +1,54 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPL Mega Auction</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#101525;color:white;font-family:Arial}
-header{text-align:center;padding:20px;background:#182849}
-h1{color:#ffca28}
-.container{max-width:850px;margin:auto;padding:15px}
-.card{background:#1c2944;padding:18px;border-radius:15px;margin:15px 0}
-input,button{padding:13px;border:0;border-radius:8px;margin:5px;font-size:15px}
-input{width:90%;max-width:350px}
-button{background:#ffb300;color:#111;font-weight:bold}
-.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.team{background:#263957;padding:14px;border-radius:12px;text-align:center}
-.player{text-align:center;background:#263957;padding:25px;border-radius:15px}
-.big{font-size:27px;font-weight:bold;color:#ffca28}
-#game{display:none}
-</style>
+    <title>IPL Auction 2027</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #07152e;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ffb800;
+            font-size: 32px;
+        }
+        .card {
+            background: #142b50;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        button {
+            background: #ffb800;
+            color: black;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<header>
-<h1>🏏 IPL MEGA AUCTION</h1>
-<p>Two Teams • Live Auction • Head to Head</p>
-</header>
-<div class="container">
-<div class="card" id="setup">
-<h2>Join Auction Room</h2>
-<input id="roomInput" placeholder="Enter Room Code">
-<br>
-<input id="teamInput" placeholder="Enter Your Team Name">
-<br>
-<button onclick="createRoom()">CREATE ROOM</button>
-<button onclick="joinRoom()">JOIN ROOM</button>
-<p id="message"></p>
-</div>
-<div id="game">
-<div class="card">
-<h3>ROOM CODE: <span id="roomCode"></span></h3>
-<p id="status">Connecting...</p>
-</div>
-<div class="teams">
-<div class="team">
-<h3 id="team1">TEAM 1</h3>
-<p id="bid1">₹0</p>
-</div>
-<div class="team">
-<h3 id="team2">TEAM 2</h3>
-<p id="bid2">₹0</p>
-</div>
-</div>
-<div class="card player">
-<h2 id="playerName">Player</h2>
-<p id="playerRole">Role</p>
-<p>T20 Career Runs</p>
-<div class="big" id="runs">-</div>
-<p>Current Bid</p>
-<div class="big" id="currentBid">₹0</div>
-<p id="highest">No bids yet</p>
-</div>
-<div class="card" style="text-align:center">
-<button onclick="placeBid()">🔥 BID + ₹10 LAKH</button>
-<button onclick="sellPlayer()">SOLD</button>
-<button onclick="nextPlayer()">NEXT PLAYER</button>
-</div>
-<div class="card">
-<h3>Auction History</h3>
-<div id="history">No players sold yet</div>
-</div>
-</div>
-</div>
 
-<script type="module">
-import {initializeApp}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    <h1>🏏 IPL AUCTION</h1>
+    <p>THE ULTIMATE BIDDING BATTLE</p>
 
-import {
-getDatabase,ref,set,get,update,onValue,
-runTransaction
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    <div class="card">
+        <h2>Welcome to IPL Auction</h2>
+        <p>Build your dream team!</p>
+        <button onclick="startGame()">START AUCTION</button>
+    </div>
 
-// FIREBASE CONFIG
-const firebaseConfig = {
-apiKey: "YOUR_API_KEY",
-authDomain: "YOUR_PROJECT.firebaseapp.com",
-databaseURL: "YOUR_DATABASE_URL",
-projectId: "YOUR_PROJECT_ID",
-storageBucket: "YOUR_PROJECT.appspot.com",
-messagingSenderId: "YOUR_SENDER_ID",
-appId: "YOUR_APP_ID"
-};
+    <script>
+        function startGame() {
+            alert("Welcome to IPL Auction!");
+        }
+    </script>
 
-const app=initializeApp(firebaseConfig);
-const db=getDatabase(app);
-
-const players=[
-{name:"Virat Kohli",role:"Batter",runs:"T20 career total"},
-{name:"Rohit Sharma",role:"Batter",runs:"T20 career total"},
-{name:"MS Dhoni",role:"Wicketkeeper",runs:"T20 career total"},
-{name:"Suryakumar Yadav",role:"Batter",runs:"T20 career total"},
-{name:"Jasprit Bumrah",role:"Bowler",runs:"T20 career total"},
-{name:"Hardik Pandya",role:"All-rounder",runs:"T20 career total"},
-{name:"Ravindra Jadeja",role:"All-rounder",runs:"T20 career total"},
-{name:"Sanju Samson",role:"Wicketkeeper",runs:"T20 career total"},
-{name:"Shubman Gill",role:"Batter",runs:"T20 career total"},
-{name:"Ruturaj Gaikwad",role:"Batter",runs:"T20 career total"},
-{name:"Yashasvi Jaiswal",role:"Batter",runs:"T20 career total"},
-{name:"Rinku Singh",role:"Batter",runs:"T20 career total"},
-{name:"Rashid Khan",role:"Bowler",runs:"T20 career total"},
-{name:"Sunil Narine",role:"All-rounder",runs:"T20 career total"},
-{name:"Andre Russell",role:"All-rounder",runs:"T20 career total"},
-{name:"Nicholas Pooran",role:"Wicketkeeper",runs:"T20 career total"},
-{name:"Pat Cummins",role:"Bowler",runs:"T20 career total"},
-{name:"Travis Head",role:"Batter",runs:"T20 career total"},
-{name:"Shreyas Iyer",role:"Batter",runs:"T20 career total"},
-{name:"KL Rahul",role:"Wicketkeeper",runs:"T20 career total"}
-];
-
-let room="";
-let myTeam="";
-let roomData=null;
-
-function randomCode(){
-return Math.floor(10000+Math.random()*90000).toString();
-}
-
-window.createRoom=async()=>{
-const name=document.getElementById("teamInput").value.trim();
-if(!name)return alert("Enter team name");
-
-room=randomCode();
-myTeam="team1";
-
-try{
-await set(ref(db,"rooms/"+room),{
-team1:{name:name,bid:0},
-team2:{name:"Waiting",bid:0},
-playerIndex:0,
-highestBid:0,
-highestTeam:"",
-history:[],
-finished:false
-});
-startGame();
-}catch(e){alert(e.message)}
-};
-
-window.joinRoom=async()=>{
-const name=document.getElementById("teamInput").value.trim();
-room=document.getElementById("roomInput").value.trim();
-
-if(!name||!room)return alert("Enter details");
-
-try{
-const snap=await get(ref(db,"rooms/"+room));
-if(!snap.exists())return alert("Room not found");
-
-if(snap.val().team2.name!=="Waiting")
-return alert("Room full");
-
-myTeam="team2";
-
-await update(ref(db,"rooms/"+room),{
-team2:{name:name,bid:0}
-});
-
-startGame();
-}catch(e){alert(e.message)}
-};
-
-function startGame(){
-document.getElementById("setup").style.display="none";
-document.getElementById("game").style.display="block";
-document.getElementById("roomCode").innerText=room;
-
-onValue(ref(db,"rooms/"+room),snap=>{
-roomData=snap.val();
-if(roomData)render();
-});
-}
-
-function render(){
-document.getElementById("team1").innerText=roomData.team1.name;
-document.getElementById("team2").innerText=roomData.team2.name;
-document.getElementById("bid1").innerText="₹"+roomData.team1.bid+" Lakh";
-document.getElementById("bid2").innerText="₹"+roomData.team2.bid+" Lakh";
-
-const p=players[roomData.playerIndex];
-
-document.getElementById("playerName").innerText=p?p.name:"Auction completed";
-document.getElementById("playerRole").innerText=p?p.role:"";
-document.getElementById("runs").innerText=p?p.runs:"";
-document.getElementById("currentBid").innerText="₹"+roomData.highestBid+" Lakh";
-
-document.getElementById("highest").innerText=
-roomData.highestTeam?
-"Highest bidder: "+roomData[roomData.highestTeam].name:
-"No bids yet";
-
-document.getElementById("status").innerText=
-roomData.team2.name==="Waiting"?
-"Waiting for opponent":
-"Both teams connected!";
-
-document.getElementById("history").innerHTML=
-(roomData.history||[]).map(x=>"<p>"+x+"</p>").join("");
-}
-
-window.placeBid=async()=>{
-if(!roomData)return;
-if(roomData.team2.name==="Waiting")
-return alert("Wait for opponent!");
-
-if(roomData.finished)return;
-
-try{
-await runTransaction(ref(db,"rooms/"+room),data=>{
-if(!data||data.finished)return data;
-
-data.highestBid=(data.highestBid||0)+10;
-data.highestTeam=myTeam;
-data[myTeam].bid=data.highestBid;
-
-return data;
-});
-}catch(e){alert(e.message)}
-};
-
-window.sellPlayer=async()=>{
-if(myTeam!=="team1")
-return alert("Only room creator can confirm SOLD!");
-
-if(!roomData||roomData.highestBid===0)
-return alert("First place a bid!");
-
-const p=players[roomData.playerIndex];
-if(!p)return;
-
-const winner=roomData[roomData.highestTeam].name;
-const record=p.name+" SOLD to "+winner+
-" for ₹"+roomData.highestBid+" Lakh";
-
-await update(ref(db,"rooms/"+room),{
-history:[...(roomData.history||[]),record],
-finished:true
-});
-
-};
-
-window.nextPlayer=async()=>{
-if(myTeam!=="team1")
-return alert("Only room creator can move next!");
-
-if(!roomData||!roomData.finished)
-return alert("Confirm SOLD first!");
-
-const next=roomData.playerIndex+1;
-
-await update(ref(db,"rooms/"+room),{
-playerIndex:next,
-highestBid:0,
-highestTeam:"",
-"team1/bid":0,
-"team2/bid":0,
-finished:false
-});
-};
-
-</script>
 </body>
 </html>
