@@ -105,5 +105,21 @@ function unsold() {
         "UNSOLD!";
 }
 </script>
+<script>
+let team1Money = 100;
+let team2Money = 100;
+
+function updatePurse(team, amount) {
+    if (team === 1) {
+        team1Money -= amount;
+        document.getElementById("purse1").innerText =
+            "₹" + team1Money + " Crore";
+    } else {
+        team2Money -= amount;
+        document.getElementById("purse2").innerText =
+            "₹" + team2Money + " Crore";
+    }
+}
+</script>
 </body>
 </html>
